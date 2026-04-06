@@ -1,14 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <!-- =====================
+         META / PAGE SETUP
+    ====================== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>James Coviello Design</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1>Hello, World!</h1>
-    <p>This is my first paragraph of text.</p>
-    <a href="https://www.w3schools.com">Visit W3Schools for more tutorials!</a>
-    <script src="script.js"></script>
-</body>
+
+    <!-- Favicon -->
+    <link rel="icon" href="./assets/favicon.ico" />
+
+    <!-- Styles -->
+    <link
+      href="https://cdn.jsdelivr.net"
+      rel="stylesheet"
+      integrity="..."
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Fonts -->
+    <link
+      rel="preload"
+      href="./Assets/Sharp-Grotesk.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+  </head>
+
+  <body>
+    <!-- =====================
+         PRELOADER
+    ====================== -->
+    <div class="preloader">
+      <div class="preloader-bg"></div>
+
+      <div class="preloader-inner">
+        <h1 class="preloader-text">Hello World</h1>
+      </div>
+    </div>
+
+    <!-- =====================
+         HEADER / NAVIGATION
+    ====================== -->
+    <header class="reveal">
+      <nav>
+        <h1 class="logo">
+          <a href="#">James Coviello</a>
+        </h1>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="nav-toggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- Navigation Links -->
+        <ul class="site-nav">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li>
+            <a
+              class="btn"
+              href="./Assets/JamesCoviello_Resume_2026.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Experience
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- =====================
+         HERO SECTION
+    ====================== -->
+    <section id="hero" class="hero reveal"></section>
+
+    <!-- =====================
+         PROJECTS SECTION
+    ====================== -->
+    <div id="projects" class="projects reveal"></div>
+
+    <!-- =====================
+         FOOTER
+    ====================== -->
+    <footer>
+      <div class="sitemap reveal">
+        <!-- Skills -->
+        <div id="skills" class="skills">
+          <h3>Skills</h3>
+          <p>UI/UX Design</p>
+          <p>Brand & Visual Design</p>
+          <p>Front-End Development</p>
+          <p>Content Systems</p>
+          <p>Motion Design</p>
+          <p>Illustration</p>
+        </div>
+
+        <!-- Connect -->
+        <div class="connect">
+          <h3>Connect</h3>
+          <p>
+            <a href="mailto:james@coviellodesign.com" target="_blank" rel="noopener noreferrer">
+              Email
+            </a>
+          </p>
+          <p>
+            <a href="https://www.linkedin.com/in/james-coviello" target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+          </p>
+          <p>
+            <a href="http://instagram.com/coviello.design/" target="_blank" rel="noopener noreferrer">
+              Instagram
+            </a>
+          </p>
+        </div>
+
+        <!-- Experience -->
+        <div class="experience">
+          <h3>Experience</h3>
+          <p>
+            <a
+              href="./Assets/JamesCoviello_Resume_2026.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Resume
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer Branding -->
+      <div class="footer-logo reveal">
+        <h1>
+          <a href="https://www.jamesanimates.com" target="_blank" rel="noopener noreferrer">
+            James Animates
+          </a>
+        </h1>
+      </div>
+
+      <!-- Credit -->
+      <div class="credit reveal">
+        <p>Built from scratch. © 2026 James Coviello Design.</p>
+      </div>
+    </footer>
+
+    <!-- =====================
+         SCRIPTS
+    ====================== -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="module" src="script.js"></script>
+  </body>
 </html>
