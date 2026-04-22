@@ -55,8 +55,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const header = document.querySelector("header");
     const hero = document.querySelector(".hero");
 
-    header?.classList.add("revealed");
-    hero?.classList.add("revealed");
+    header?.classList.remove("revealed");
+    hero?.classList.remove("revealed");
+
+    header?.getBoundingClientRect();
+    hero?.getBoundingClientRect();
+
+    requestAnimationFrame(() => {
+      header?.classList.add("revealed");
+      hero?.classList.add("revealed");
+    });
 
     observe(document.querySelector(".projects"));
 
@@ -68,20 +76,14 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("load", () => {
     window.scrollTo(0, 0);
 
-    if (fillText) {
-      fillText.addEventListener(
-        "animationend",
-        () => {
-          preloader?.classList.add("hidden");
+    const preloader = document.querySelector(".preloader");
 
-          setTimeout(() => {
-            siteReady = true;
-            startSite();
-          }, 300);
-        },
-        { once: true }
-      );
-    }
+    preloader?.classList.add("hidden");
+
+    setTimeout(() => {
+      siteReady = true;
+      startSite();
+    }, 300);
   });
 });
 
@@ -94,9 +96,11 @@ const query = `{
     description,
     image
   },
+  
   "projectSection": *[_type == "projectSection"][0]{
     title
   },
+  
   "projects": *[_type == "project"] | order(order asc){
     title,
     image,
@@ -110,6 +114,22 @@ const query = `{
     implementation,
     outcomeTitle,
     outcome
+  },
+  
+  "brandSection": *[_type == "brandSection"][0]{
+    title
+  },
+  
+  "brandItems": *[_type == "brandItem"] | order(order asc){
+    title,
+    description,
+    url,
+    file{
+      asset->{
+        url
+      }
+    },
+  images
   }
 }`;
 
@@ -148,28 +168,6 @@ client.fetch(query).then((data) => {
         .map((word, i) => `<span class="word" style="transition-delay: ${0.4 + i * 0.04}s">${word}</span>`)
         .join(" ");
     }
-  }
-
-  function triggerHeroReveal() {
-    if (!hero) return;
-
-    hero.classList.remove("revealed");
-    hero.getBoundingClientRect();
-
-    requestAnimationFrame(() => {
-      hero.classList.add("revealed");
-    });
-  }
-
-  if (siteReady) {
-    triggerHeroReveal();
-  } else {
-    const interval = setInterval(() => {
-      if (siteReady) {
-        triggerHeroReveal();
-        clearInterval(interval);
-      }
-    }, 50);
   }
 
   /* =====================
@@ -391,6 +389,110 @@ client.fetch(query).then((data) => {
   }
 
   observe(projectsSection);
+
+  /* =====================
+   BRAND SECTION
+===================== */
+  const brandSection = document.querySelector(".brand");
+
+  if (brandSection) {
+    brandSection.innerHTML = `
+    <h2 class="brand-title">
+      ${data.brandSection?.title || "Brand"}
+    </h2>
+    <div class="brand-list"></div>
+  `;
+
+    const list = brandSection.querySelector(".brand-list");
+    const items = [];
+
+    data.brandItems?.forEach((item) => {
+      const el = document.createElement("div");
+      el.classList.add("brand-item", "reveal");
+
+      el.innerHTML = `
+      <div class="brand-left">
+        <div class="brand-gallery">
+          ${
+            item.images
+              ?.map(
+                (img, i) => `
+              <img 
+                src="${urlFor(img).url()}" 
+                class="brand-img ${i === 0 ? "active" : ""}"
+              />
+            `
+              )
+              .join("") || ""
+          }
+        </div>
+
+        <!-- ARROWS -->
+        <div class="brand-nav">
+          <button class="brand-arrow brand-arrow--prev"></button>
+          <button class="brand-arrow brand-arrow--next"></button>
+        </div>
+      </div>
+
+      <div class="brand-right">
+        <h2>${item.title || ""}</h2>
+        <p>${item.description || ""}</p>
+        ${
+          item.file?.asset?.url || item.url
+            ? `<a 
+        href="${item.file?.asset?.url || item.url}" 
+        target="_blank" 
+        class="btn"
+        ${item.file?.asset?.url ? "download" : ""}
+      >
+        ${item.file ? "View Project" : "View Project"}
+      </a>`
+            : ""
+        }
+      </div>
+    `;
+
+      list.appendChild(el);
+      items.push(el);
+      enhanceButtons(el);
+
+      /* =====================
+       GALLERY LOGIC
+    ===================== */
+      const images = el.querySelectorAll(".brand-img");
+
+      if (images.length <= 1) {
+        el.querySelector(".brand-nav")?.remove();
+        return;
+      }
+
+      let current = 0;
+
+      const show = (i) => {
+        images.forEach((img, idx) => {
+          if (idx === i) {
+            img.classList.add("active");
+          } else {
+            img.classList.remove("active");
+          }
+        });
+      };
+
+      el.querySelector(".brand-arrow--next")?.addEventListener("click", () => {
+        current = (current + 1) % images.length;
+        show(current);
+      });
+
+      el.querySelector(".brand-arrow--prev")?.addEventListener("click", () => {
+        current = (current - 1 + images.length) % images.length;
+        show(current);
+      });
+    });
+
+    items.forEach((item) => observe(item));
+
+    observe(brandSection);
+  }
 });
 
 /* =====================
@@ -427,7 +529,7 @@ enhanceButtons();
    NAV ACTIVE STATE
 ===================== */
 window.addEventListener("scroll", () => {
-  const sections = document.querySelectorAll("#projects, #skills, #experience");
+  const sections = document.querySelectorAll("#web, #brand, #skills, #experience");
   const navLinks = document.querySelectorAll("header .site-nav a");
 
   let current = "";
