@@ -287,14 +287,18 @@ nav {
 /* ========================================
    HEROES
 ======================================== */
-.hero-image {
-	width: 100%;
-	border: var(--bs-border-width) solid var(--bs-body-color);
+.hero {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+	position: relative;
+	min-height: 0;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
 }
 
-.hero {
-	padding-top: 1.5rem;
-	position: relative;
+.hero-inner {
+	width: 100%;
 }
 
 .hero {
@@ -302,8 +306,9 @@ nav {
 		content: "";
 		display: block;
 		background: var(--bs-primary);
+		border-bottom: var(--bs-border-width) solid var(--bs-body-color);
 		width: 100%;
-		height: calc(100% - 50vh);
+		height: 100%;
 		position: absolute;
 		top: 0;
 		bottom: auto;
@@ -316,16 +321,46 @@ nav {
 
 .hero-title {
 	font-family: var(--bs-heading-font);
-	font-size: 10.5vw;
+	font-size: 14vw;
 	margin-bottom: 1.5rem;
+	line-height: 1;
 	max-width: 100%;
 	overflow-wrap: break-word;
 	-webkit-font-smoothing: antialiased;
 	moz-osx-font-smoothing: grayscale;
 }
 
-.hero-text {
+.hero-word {
+	display: block;
+}
+
+.hero-word-0 {
+	position: relative;
+	
+	&:after {
+		content: "New York City";
+		display: inline-block;
+		font-family: "Instrument Sans", sans-serif;
+		font-style: italic;
+		font-weight: 500;
+		font-size: 1rem;
+		width: fit-content;
+		height: 1.5rem;
+		transform: translate(5.5vw, -3vw);
+	}
+}
+
+.hero-word-1 {
+	padding-left: 18.5vw;
+}
+
+.hero-description {
+	font-size: 1.25rem;
 	margin-top: 1.5rem;
+	margin-left: 0;
+	margin-right: auto;
+	padding-left: 0;
+	max-width: 810px;
 }
 
 /* ========================================
@@ -918,28 +953,11 @@ header.revealed {
 	transform: scaleY(1);
 }
 
-.hero.reveal .hero-image {
-	opacity: 0;
-	transform: scale(0.75);
-	transition:
-		transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-		opacity 0.5s ease;
-	transition-delay: 0.75s;
-}
-
-.hero.revealed .hero-image {
-	opacity: 1;
-	transform: scale(1);
-}
-
 .hero.reveal .hero-title {
 	opacity: 0;
 	transform: translateY(40px);
 	filter: blur(10px);
-	transition:
-		opacity 0.5s ease,
-		transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-		filter 0.5s ease;
+	transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
 	transition-delay: 0.5s;
 }
 
@@ -954,10 +972,7 @@ header.revealed {
 	opacity: 0;
 	transform: translateY(40px);
 	filter: blur(10px);
-	transition:
-		transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-		opacity 0.5s ease,
-		filter 0.5s ease;
+	transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, filter 0.5s ease;
 }
 
 .hero.revealed .hero-description .word {
@@ -1231,28 +1246,32 @@ header.revealed {
 		width: var(--bs-border-width);
 		height: 1rem;
 	}
-
+	
 	/* Heroes */
 	.hero {
-		&:before {
-			height: calc(100% - 20vh);
-		}
+		min-height: 67vh;
 	}
-
-	.hero-content {
-		display: flex;
-		align-items: center;
-		gap: 3rem;
+	
+	.hero-title {
+		font-size: 10.5vw;
 	}
-
-	.hero-media,
-	.hero-text {
-		flex: 1;
+	
+	.hero-description {
+		font-size: 2rem;
+		padding-left: 13.5vw;
+		margin-top: 3rem;
+		margin-left: auto;
+		margin-right: 0;
 	}
-
-	.hero-text {
-		padding-bottom: 20vh;
-		margin-top: 0;
+	
+	.hero-word-0:after {
+		font-size: 2rem;
+		height: 2rem;
+		transform: translate(7vw, -2.5vw);
+	}
+	
+	.hero-word-1 {
+    	padding-left: 13.5vw;
 	}
 
 	/* Projects */

@@ -73,18 +73,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 50);
   }
 
-  window.addEventListener("load", () => {
-    window.scrollTo(0, 0);
-
-    const preloader = document.querySelector(".preloader");
-
-    preloader?.classList.add("hidden");
-
-    setTimeout(() => {
-      siteReady = true;
-      startSite();
-    }, 300);
+window.addEventListener("load", () => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+    });
   });
+
+  const preloader = document.querySelector(".preloader");
+  preloader?.classList.add("hidden");
+
+  setTimeout(() => {
+    siteReady = true;
+    startSite();
+  }, 300);
+});
 });
 
 /* =====================
@@ -94,7 +97,6 @@ const query = `{
   "hero": *[_type == "hero"][0]{
     title,
     description,
-    image
   },
   
   "projectSection": *[_type == "projectSection"][0]{
@@ -136,40 +138,37 @@ const query = `{
 client.fetch(query).then((data) => {
   const hero = document.querySelector(".hero");
 
-  if (data.hero && hero) {
-    hero.innerHTML = `
-      <h1 class="hero-title">${data.hero.title || ""}</h1>
-      <div class="hero-content">
-        <div class="hero-media">
-          ${
-            data.hero.image
-              ? `
-            <img 
-              class="hero-image reveal-child" 
-              src="${urlFor(data.hero.image).url()}" 
-              alt="${data.hero.title || ""}"
-            >
-          `
-              : ""
-          }
-        </div>
-        <div class="hero-text">
-          <h2 class="hero-description">${data.hero.description || ""}</h2>
-        </div>
-      </div>
-    `;
+if (data.hero && hero) {
+  hero.innerHTML = `
+    <div class="hero-inner">
 
-    const desc = hero.querySelector(".hero-description");
+      <h1 class="hero-title">
+        ${(data.hero.title || "")
+          .split(/\s+/)
+          .map((word, i) => `<span class="hero-word hero-word-${i}">${word}</span>`)
+          .join(" ")}
+      </h1>
 
-    if (desc && !desc.querySelector(".word")) {
-      const words = desc.textContent.split(" ");
+      <h2 class="hero-description">
+        ${data.hero.description || ""}
+      </h2>
 
-      desc.innerHTML = words
-        .map((word, i) => `<span class="word" style="transition-delay: ${0.4 + i * 0.04}s">${word}</span>`)
-        .join(" ");
-    }
+    </div>
+  `;
+
+  const desc = hero.querySelector(".hero-description");
+
+  if (desc && !desc.querySelector(".word")) {
+    const words = desc.textContent.trim().split(/\s+/);
+
+    desc.innerHTML = words
+      .map(
+        (word, i) =>
+          `<span class="word" style="transition-delay: ${0.4 + i * 0.04}s">${word}</span>`
+      )
+      .join(" ");
   }
-
+}
   /* =====================
    PROJECTS
 ===================== */
